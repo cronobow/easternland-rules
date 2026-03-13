@@ -41,13 +41,13 @@ body {
 
 /* === Header === */
 .site-header {
-  background: #111827;
+  background: linear-gradient(135deg, #0369a1 0%, #0891b2 100%);
   color: #fff;
   padding: 24px 32px;
-  border-bottom: 3px solid #374151;
+  border-bottom: 3px solid #0284c7;
 }
 .site-header h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
-.site-header p  { color: #9ca3af; margin-top: 4px; font-size: 0.9375rem; }
+.site-header p  { color: #bae6fd; margin-top: 4px; font-size: 0.9375rem; }
 
 /* === Principles Section === */
 .section { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
@@ -257,7 +257,7 @@ body {
 .sort-btn + .sort-btn { border-left: 1px solid #d1d5db; }
 .sort-btn:hover { background: #f3f4f6; }
 .sort-btn.active {
-  background: #111827;
+  background: #0369a1;
   color: #fff;
 }
 

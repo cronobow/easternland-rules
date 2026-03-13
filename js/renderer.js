@@ -35,9 +35,9 @@ function getItemTitle(item) {
     return `第${item.newNum}條`;
   }
   if (item.oldCodes.length > 0) {
-    return `${item.oldCodes[0]} → (刪除)`;
+    return `舊規約${item.oldCodes.join('、')}`;
   }
-  return '（舊條文）→ (刪除)';
+  return '舊規約（未知條號）';
 }
 
 function renderComparisonItem(item) {

@@ -22,7 +22,7 @@ function buildTOC(items, tocContainer) {
     const firstLine = (item.after || item.before || '').split('\n')[0].trim();
     const displayText = firstLine || (item.newNum != null
       ? `第${item.newNum}條`
-      : `${item.oldCodes[0] ?? '舊條文'} → (刪除)`);
+      : `舊規約${item.oldCodes[0] ?? '（未知）'}`);
 
     return `
       <div class="toc-item" data-target="${id}" onclick="jumpToItem('${id}')">

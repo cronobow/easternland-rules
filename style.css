@@ -433,9 +433,25 @@ body {
   }
 
   .comparison-header {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
     gap: 8px;
   }
 
-  .title-group { flex: 1; min-width: 0; }
+  .title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .title-group .comparison-title { flex: 1; }
+
+  .expand-buttons {
+    display: flex;
+    gap: 6px;
+  }
+  .expand-buttons button { flex: 1; }
+
+  .sort-buttons { display: flex; }
+  .sort-btn { flex: 1; text-align: center; }
 }

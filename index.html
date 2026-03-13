@@ -39,6 +39,7 @@
       <div class="comparison-main">
         <div class="comparison-header">
           <div class="title-group">
+            <button id="mobile-toc-btn" title="開啟目錄"><i data-lucide="menu"></i></button>
             <span class="comparison-title">條文比較</span>
             <div class="expand-buttons">
               <button onclick="expandAll()"><i data-lucide="chevrons-down"></i>展開全部條文</button>
@@ -58,8 +59,8 @@
     </div>
   </section>
 
-  <!-- 手機版浮動按鈕 -->
-  <button id="mobile-toc-btn" title="開啟目錄"><i data-lucide="menu"></i></button>
+  <!-- 手機版側邊欄背景遮罩 -->
+  <div id="sidebar-backdrop"></div>
 
   <!-- JS：marked.js CDN，再載入本地模組 -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

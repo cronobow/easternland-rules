@@ -378,25 +378,30 @@ body {
 .principle-tooltip strong { color: #fde68a; display: block; }
 .principle-tooltip hr { border: none; border-top: 1px solid #374151; margin: 8px 0; }
 
-/* === Mobile FAB === */
+/* === Mobile TOC button（桌機隱藏，手機顯示於 comparison-header 內） === */
 #mobile-toc-btn {
   display: none;
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: #111827;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 1.25rem;
+  background: none;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #374151;
+  padding: 5px 8px;
   cursor: pointer;
-  z-index: 100;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
 }
+#mobile-toc-btn:hover { background: #f3f4f6; }
+
+/* === Sidebar backdrop === */
+#sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 40;
+}
+#sidebar-backdrop.visible { display: block; }
 
 /* === Responsive (<768px) === */
 @media (max-width: 768px) {
@@ -404,23 +409,23 @@ body {
 
   #sidebar {
     position: fixed;
-    left: -240px;
+    left: calc(-80vw - 4px);
     top: 0;
     height: 100%;
     z-index: 50;
-    width: 300px !important; /* 手機上不縮窄 */
-    box-shadow: 2px 0 16px rgba(0,0,0,0.15);
+    width: 80vw !important;
+    box-shadow: 2px 0 20px rgba(0,0,0,0.2);
     transition: left 0.25s ease;
   }
   #sidebar.mobile-open { left: 0; }
 
   /* 覆蓋桌機 collapsed 樣式，手機上強制顯示 text */
-  #sidebar.collapsed { width: 300px; }
+  #sidebar.collapsed { width: 80vw; }
   #sidebar.collapsed .sidebar-title { display: block; }
   #sidebar.collapsed .toc-text      { display: block; }
 
   .comparison-layout {
-    height: calc(100vh - 180px);
+    height: calc(100vh - 130px);
   }
 
   .columns {
@@ -428,8 +433,9 @@ body {
   }
 
   .comparison-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 8px;
   }
+
+  .title-group { flex: 1; min-width: 0; }
 }

@@ -79,22 +79,31 @@ function setupIntersectionObserver() {
 }
 
 function setupMobileToggle() {
-  const fab     = document.getElementById('mobile-toc-btn');
-  const sidebar = document.getElementById('sidebar');
+  const fab      = document.getElementById('mobile-toc-btn');
+  const sidebar  = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
   if (!fab) return;
 
+  function openSidebar() {
+    sidebar.classList.add('mobile-open');
+    if (backdrop) backdrop.classList.add('visible');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('mobile-open');
+    if (backdrop) backdrop.classList.remove('visible');
+  }
+
   fab.addEventListener('click', () => {
-    sidebar.classList.toggle('mobile-open');
+    sidebar.classList.contains('mobile-open') ? closeSidebar() : openSidebar();
   });
 
-  // 點擊遮罩（非 sidebar 區域）關閉
-  document.addEventListener('click', (e) => {
-    if (
-      window.innerWidth < 768 &&
-      !sidebar.contains(e.target) &&
-      e.target !== fab
-    ) {
-      sidebar.classList.remove('mobile-open');
-    }
+  if (backdrop) {
+    backdrop.addEventListener('click', closeSidebar);
+  }
+
+  // 點擊目錄項目後自動關閉（手機版）
+  document.getElementById('toc-list')?.addEventListener('click', () => {
+    if (window.innerWidth < 768) closeSidebar();
   });
 }

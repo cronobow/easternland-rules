@@ -1,6 +1,37 @@
 /* === Reset & Base === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* === Lucide Icons === */
+.lucide {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* === Toast === */
+.toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: #111827;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 1rem;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 200;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
   color: #111827;
@@ -30,13 +61,28 @@ body {
 }
 
 #principles-content h2 {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  margin: 20px 0 6px;
-  color: #1f2937;
+  margin: 40px 0 10px;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
 }
-#principles-content p  { color: #374151; margin-bottom: 12px; }
-#principles-content ul { padding-left: 20px; }
+#principles-content h2:first-child { margin-top: 0; }
+#principles-content h3 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin: 20px 0 4px;
+  color: #374151;
+}
+#principles-content p  { color: #4b5563; margin-bottom: 10px; }
+#principles-content strong {
+  font-weight: 700;
+  background: linear-gradient(transparent 70%, #fde68a 70%);
+  padding: 0 1px;
+}
+#principles-content ul,
+#principles-content ol { padding-left: 20px; }
 
 /* === Loading / Error States === */
 .loading-text { color: #9ca3af; font-style: italic; }
@@ -72,7 +118,7 @@ body {
 
 /* === Sidebar === */
 #sidebar {
-  width: 220px;
+  width: 300px;
   flex-shrink: 0;
   background: #f9fafb;
   border-right: 1px solid #e5e7eb;
@@ -166,18 +212,54 @@ body {
 
 .comparison-title { font-size: 1rem; font-weight: 700; }
 
-#sort-toggle {
-  background: #111827;
-  color: #fff;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 4px;
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.expand-buttons {
+  display: flex;
+  gap: 6px;
+}
+.expand-buttons button {
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 6px 12px;
   cursor: pointer;
   font-size: 0.8125rem;
+  font-weight: 500;
   transition: background 0.15s;
   white-space: nowrap;
 }
-#sort-toggle:hover { background: #374151; }
+.expand-buttons button:hover { background: #f3f4f6; }
+
+.sort-buttons {
+  display: flex;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.sort-btn {
+  background: #fff;
+  color: #374151;
+  border: none;
+  padding: 6px 16px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.sort-btn + .sort-btn { border-left: 1px solid #d1d5db; }
+.sort-btn:hover { background: #f3f4f6; }
+.sort-btn.active {
+  background: #111827;
+  color: #fff;
+}
 
 /* === Comparison Items === */
 .comparison-item {
@@ -195,8 +277,34 @@ body {
 }
 .item-header:hover { background: #f9fafb; }
 
-.item-title  { font-weight: 600; flex: 1; font-size: 0.9375rem; }
-.expand-icon { color: #9ca3af; font-size: 0.8125rem; flex-shrink: 0; }
+.item-title-group { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.item-title  { font-weight: 600; font-size: 0.9375rem; }
+.expand-icon { color: #9ca3af; flex-shrink: 0; }
+.expand-icon .lucide {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+  transform: rotate(0deg);
+}
+.comparison-item.expanded .expand-icon .lucide { transform: rotate(90deg); }
+
+/* Sidebar toggle flip */
+#sidebar-toggle .lucide { transition: transform 0.25s ease; }
+#sidebar.collapsed #sidebar-toggle .lucide { transform: rotate(180deg); }
+
+.share-btn {
+  background: none;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  color: #9ca3af;
+  font-size: 0.8125rem;
+  padding: 2px 7px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.share-btn:hover { border-color: #6b7280; color: #374151; }
+.share-btn.copied { border-color: #16a34a; color: #16a34a; }
 
 /* === Type Badges === */
 .type-badge {
@@ -216,7 +324,7 @@ body {
 
 .columns {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 5fr 5fr 2fr;
   gap: 12px;
   margin-top: 12px;
 }
@@ -224,7 +332,7 @@ body {
 .col { border-radius: 6px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); }
 .col-before { background: #f3f4f6; }
 .col-after  { background: #eff6ff; }
-.col-notes  { background: #fefce8; }
+.col-notes  { background: #fff; }
 
 .col-header {
   font-size: 0.6875rem;
@@ -245,6 +353,30 @@ body {
 .col-content p:last-child { margin-bottom: 0; }
 
 .placeholder { color: #9ca3af; font-style: italic; }
+
+/* === Principle Tooltip === */
+.principle-ref {
+  cursor: help;
+  border-bottom: 1px dashed #ca8a04;
+  color: #92400e;
+  font-weight: 500;
+}
+
+.principle-tooltip {
+  position: fixed;
+  background: #1f2937;
+  color: #f3f4f6;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  max-width: 300px;
+  z-index: 300;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+}
+.principle-tooltip strong { color: #fde68a; display: block; }
+.principle-tooltip hr { border: none; border-top: 1px solid #374151; margin: 8px 0; }
 
 /* === Mobile FAB === */
 #mobile-toc-btn {
@@ -276,14 +408,14 @@ body {
     top: 0;
     height: 100%;
     z-index: 50;
-    width: 220px !important; /* 手機上不縮窄 */
+    width: 300px !important; /* 手機上不縮窄 */
     box-shadow: 2px 0 16px rgba(0,0,0,0.15);
     transition: left 0.25s ease;
   }
   #sidebar.mobile-open { left: 0; }
 
   /* 覆蓋桌機 collapsed 樣式，手機上強制顯示 text */
-  #sidebar.collapsed { width: 220px; }
+  #sidebar.collapsed { width: 300px; }
   #sidebar.collapsed .sidebar-title { display: block; }
   #sidebar.collapsed .toc-text      { display: block; }
 

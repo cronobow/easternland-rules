@@ -7,14 +7,22 @@
  * setupMobileToggle()
  */
 
+function getArticleTitle(item) {
+  const content = item.after || item.before || '';
+  const firstLine = content.split('\n')[0].trim();
+  // 移除「第X條」開頭，只留標題部分；若無標題則 fallback
+  const titleMatch = firstLine.match(/第[^條]+條\s+(.+)/);
+  return titleMatch ? titleMatch[1].trim() : firstLine;
+}
+
 function buildTOC(items, tocContainer) {
   tocContainer.innerHTML = items.map(item => {
     const id = getItemId(item);
-    // 顯示新條號（優先），否則顯示第一個舊條號
     const displayNum = item.newNum != null ? item.newNum : (item.oldNums[0] ?? '?');
+    const articleTitle = getArticleTitle(item);
     const displayText = item.newNum != null
-      ? `新第${item.newNum}條`
-      : `舊第${item.oldNums[0]}條（刪除）`;
+      ? `第${item.newNum}條　${articleTitle}`
+      : `舊規約第${item.oldNums[0]}條 → (刪除)`;
 
     return `
       <div class="toc-item" data-target="${id}" onclick="jumpToItem('${id}')">
@@ -32,44 +40,42 @@ function setupSidebarToggle() {
 
   toggleBtn.addEventListener('click', () => {
     sidebar.classList.toggle('collapsed');
-    toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
   });
 }
 
 function setupIntersectionObserver() {
+  const container = document.querySelector('.comparison-main');
   let currentHighlight = null;
 
-  const observer = new IntersectionObserver((entries) => {
-    // 收集所有正在 intersecting 的項目，取最靠近頂部的
-    const visibleEntries = [];
+  function updateActive() {
+    const containerTop = container.getBoundingClientRect().top;
+    const headerHeight = document.querySelector('.comparison-header')?.offsetHeight ?? 0;
+    const threshold = containerTop + headerHeight;
+    const items = document.querySelectorAll('.comparison-item');
+    let activeItem = null;
 
-    entries.forEach(entry => {
-      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-        visibleEntries.push(entry);
-      }
-    });
-
-    if (visibleEntries.length === 0) return;
-
-    // 排序：依 boundingClientRect.top（最靠近 viewport 頂部）
-    visibleEntries.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-    const topId = visibleEntries[0].target.id;
-
-    if (topId !== currentHighlight) {
-      currentHighlight = topId;
-      document.querySelectorAll('.toc-item').forEach(el => {
-        el.classList.toggle('active', el.dataset.target === topId);
-      });
-      // 把高亮項目捲動到目錄可見區域
-      const activeToc = document.querySelector(`.toc-item[data-target="${topId}"]`);
-      if (activeToc) {
-        activeToc.scrollIntoView({ block: 'nearest' });
+    for (const item of items) {
+      // 條文上格線碰到 comparison-header 下格線時切換
+      if (item.getBoundingClientRect().top <= threshold + 2) {
+        activeItem = item;
       }
     }
-  }, { threshold: 0.5 });
 
-  document.querySelectorAll('.comparison-item').forEach(el => observer.observe(el));
-  return observer;
+    const activeId = activeItem ? activeItem.id : (items[0] ? items[0].id : null);
+    if (!activeId || activeId === currentHighlight) return;
+
+    currentHighlight = activeId;
+    document.querySelectorAll('.toc-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.target === activeId);
+    });
+    const activeToc = document.querySelector(`.toc-item[data-target="${activeId}"]`);
+    if (activeToc) activeToc.scrollIntoView({ block: 'nearest' });
+  }
+
+  container.addEventListener('scroll', updateActive);
+  updateActive();
+
+  return { disconnect: () => container.removeEventListener('scroll', updateActive) };
 }
 
 function setupMobileToggle() {

@@ -16,7 +16,7 @@
 
   <!-- Section 1: 修改原則 -->
   <section class="section" id="section-principles">
-    <h2 class="section-title">修改原則</h2>
+    <h2 class="section-title">修訂原則</h2>
     <div id="principles-content">
       <p class="loading-text">載入中…</p>
     </div>
@@ -30,7 +30,7 @@
       <nav id="sidebar">
         <div class="sidebar-header">
           <span class="sidebar-title">目錄</span>
-          <button id="sidebar-toggle" title="收合/展開目錄">◀</button>
+          <button id="sidebar-toggle" title="收合/展開目錄"><i data-lucide="chevrons-left"></i></button>
         </div>
         <div id="toc-list"></div>
       </nav>
@@ -38,8 +38,17 @@
       <!-- 右側主內容 -->
       <div class="comparison-main">
         <div class="comparison-header">
-          <span class="comparison-title">條列比較</span>
-          <button id="sort-toggle">依新規約排序（切換）</button>
+          <div class="title-group">
+            <span class="comparison-title">條文比較</span>
+            <div class="expand-buttons">
+              <button onclick="expandAll()"><i data-lucide="chevrons-down"></i>展開全部條文</button>
+              <button onclick="collapseAll()"><i data-lucide="chevrons-up"></i>收起全部條文</button>
+            </div>
+          </div>
+          <div class="sort-buttons">
+            <button class="sort-btn active" data-sort="new">依新規約排序</button>
+            <button class="sort-btn" data-sort="old">依舊規約排序</button>
+          </div>
         </div>
         <div id="comparison-list">
           <p class="loading-text" style="padding:16px;">載入中…</p>
@@ -50,10 +59,11 @@
   </section>
 
   <!-- 手機版浮動按鈕 -->
-  <button id="mobile-toc-btn" title="開啟目錄">☰</button>
+  <button id="mobile-toc-btn" title="開啟目錄"><i data-lucide="menu"></i></button>
 
   <!-- JS：marked.js CDN，再載入本地模組 -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/parser.js"></script>
   <script src="js/renderer.js"></script>
   <script src="js/sidebar.js"></script>

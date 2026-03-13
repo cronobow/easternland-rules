@@ -22,9 +22,15 @@ function parseComparison(mdText) {
     .filter(s => s.trim());
 
   return blocks.map((block, index) => {
+    // 跳過 HTML 註解區塊
+    if (block.trimStart().startsWith('<!--')) return null;
+
     const headerMatch = block.match(/##\s*\[舊:([^\]]+)\]\[新:([^\]]+)\]\s*(.+)/);
     if (!headerMatch) {
-      console.warn(`[parser] Block ${index}: 無法解析標頭，已跳過`);
+      // 非條文區塊（如檔案說明、標題）靜默略過
+      if (block.includes('[舊:') || block.includes('[新:')) {
+        console.warn(`[parser] Block ${index}: 無法解析標頭，已跳過`);
+      }
       return null;
     }
 
@@ -54,6 +60,16 @@ function parseComparison(mdText) {
       notes:  notesMatch  ? notesMatch[1].trim()  : null,
     };
   }).filter(Boolean);
+}
+
+function parsePrinciples(mdText) {
+  const map = {};
+  const re = /###\s*(\d+)\.\s*(.+)\n([\s\S]*?)(?=\n###|\n##|$)/g;
+  let m;
+  while ((m = re.exec(mdText)) !== null) {
+    map[parseInt(m[1])] = { title: m[2].trim(), body: m[3].trim() };
+  }
+  return map;
 }
 
 function sortItems(items, sortBy) {

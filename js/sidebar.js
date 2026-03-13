@@ -18,11 +18,11 @@ function getArticleTitle(item) {
 function buildTOC(items, tocContainer) {
   tocContainer.innerHTML = items.map(item => {
     const id = getItemId(item);
-    const displayNum = item.newNum != null ? item.newNum : (item.oldNums[0] ?? '?');
+    const displayNum = item.newNum != null ? item.newNum : (item.oldCodes[0] ?? '?');
     const articleTitle = getArticleTitle(item);
     const displayText = item.newNum != null
       ? `第${item.newNum}條　${articleTitle}`
-      : `舊規約第${item.oldNums[0]}條 → (刪除)`;
+      : `${item.oldCodes[0] ?? '舊條文'} → (刪除)`;
 
     return `
       <div class="toc-item" data-target="${id}" onclick="jumpToItem('${id}')">

@@ -7,10 +7,11 @@
  */
 
 const TYPE_CONFIG = {
-  '修改': { cls: 'type-modify' },
-  '新增': { cls: 'type-add'    },
-  '刪除': { cls: 'type-delete' },
-  '合併': { cls: 'type-merge'  },
+  '修改':   { cls: 'type-modify' },
+  '新增':   { cls: 'type-add'    },
+  '刪除':   { cls: 'type-delete' },
+  '合併':   { cls: 'type-merge'  },
+  '合併刪除': { cls: 'type-delete' },
 };
 
 function renderPrinciples(mdText, container) {
@@ -18,7 +19,9 @@ function renderPrinciples(mdText, container) {
 }
 
 function getItemId(item) {
-  const o = item.oldNums.length > 0 ? item.oldNums.join('-') : 'x';
+  const o = item.oldCodes.length > 0
+    ? item.oldCodes.map(c => c.replace(/-/g, '_')).join('_')
+    : 'x';
   const n = item.newNum != null ? item.newNum : 'x';
   return `item-o${o}-n${n}`;
 }
@@ -27,7 +30,10 @@ function getItemTitle(item) {
   if (item.newNum != null) {
     return `第${item.newNum}條`;
   }
-  return `舊規約第${item.oldNums[0]}條 → (刪除)`;
+  if (item.oldCodes.length > 0) {
+    return `${item.oldCodes[0]} → (刪除)`;
+  }
+  return '（舊條文）→ (刪除)';
 }
 
 function renderComparisonItem(item) {

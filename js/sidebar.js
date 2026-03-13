@@ -19,10 +19,10 @@ function buildTOC(items, tocContainer) {
   tocContainer.innerHTML = items.map(item => {
     const id = getItemId(item);
     const displayNum = item.newNum != null ? item.newNum : (item.oldCodes[0] ?? '?');
-    const articleTitle = getArticleTitle(item);
-    const displayText = item.newNum != null
-      ? `第${item.newNum}條　${articleTitle}`
-      : `${item.oldCodes[0] ?? '舊條文'} → (刪除)`;
+    const firstLine = (item.after || item.before || '').split('\n')[0].trim();
+    const displayText = firstLine || (item.newNum != null
+      ? `第${item.newNum}條`
+      : `${item.oldCodes[0] ?? '舊條文'} → (刪除)`);
 
     return `
       <div class="toc-item" data-target="${id}" onclick="jumpToItem('${id}')">

@@ -27,6 +27,10 @@ function getItemId(item) {
 }
 
 function getItemTitle(item) {
+  if (item.after) {
+    const firstLine = item.after.split('\n')[0].trim();
+    if (firstLine) return firstLine;
+  }
   if (item.newNum != null) {
     return `第${item.newNum}條`;
   }
@@ -41,13 +45,18 @@ function renderComparisonItem(item) {
   const title = getItemTitle(item);
   const cfg   = TYPE_CONFIG[item.type] || { cls: 'type-modify' };
 
+  // 新條文：移除已顯示於標題的第一行
+  const afterBody = item.after
+    ? item.after.split('\n').slice(1).join('\n').trim()
+    : null;
+
   // 空欄位佔位符（JS 自動補入）
   const beforeHtml = item.before
     ? marked.parse(item.before)
     : '<em class="placeholder">（此為新增條文，無修改前內容）</em>';
 
-  const afterHtml = item.after
-    ? marked.parse(item.after)
+  const afterHtml = afterBody
+    ? marked.parse(afterBody)
     : '<em class="placeholder">（此條文已刪除）</em>';
 
   const notesHtml = item.notes ? addPrincipleTooltips(marked.parse(item.notes)) : '';

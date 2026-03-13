@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>東方山河社區 — 規約修改說明</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <h1>東方山河社區</h1>
+    <p>規約修改說明</p>
+  </header>
+
+  <!-- Section 1: 修改原則 -->
+  <section class="section" id="section-principles">
+    <h2 class="section-title">修改原則</h2>
+    <div id="principles-content">
+      <p class="loading-text">載入中…</p>
+    </div>
+  </section>
+
+  <!-- Section 2: 條列比較 -->
+  <section id="section-comparison">
+    <div class="comparison-layout">
+
+      <!-- 左側目錄 -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">目錄</span>
+          <button id="sidebar-toggle" title="收合/展開目錄">◀</button>
+        </div>
+        <div id="toc-list"></div>
+      </nav>
+
+      <!-- 右側主內容 -->
+      <div class="comparison-main">
+        <div class="comparison-header">
+          <span class="comparison-title">條列比較</span>
+          <button id="sort-toggle">依新規約排序（切換）</button>
+        </div>
+        <div id="comparison-list">
+          <p class="loading-text" style="padding:16px;">載入中…</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 手機版浮動按鈕 -->
+  <button id="mobile-toc-btn" title="開啟目錄">☰</button>
+
+  <!-- JS：marked.js CDN，再載入本地模組 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

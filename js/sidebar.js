@@ -36,10 +36,17 @@ function buildTOC(items, tocContainer) {
 function setupSidebarToggle() {
   const sidebar   = document.getElementById('sidebar');
   const toggleBtn = document.getElementById('sidebar-toggle');
+  const backdrop  = document.getElementById('sidebar-backdrop');
   if (!toggleBtn) return;
 
   toggleBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('collapsed');
+    if (window.innerWidth < 768) {
+      // 手機版：收起即關閉 overlay
+      sidebar.classList.remove('mobile-open');
+      if (backdrop) backdrop.classList.remove('visible');
+    } else {
+      sidebar.classList.toggle('collapsed');
+    }
   });
 }
 
